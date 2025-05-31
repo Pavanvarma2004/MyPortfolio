@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Portfolio</title>
+<style>
+  /* Reset and base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(to right, #0b122a, #162447, #1f4068);
+    color: #dbe9fb;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  a {
+    color: #3399ff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #1e90ff;
+  }
+  header {
+    background: rgba(10,24,57,0.7);
+    backdrop-filter: saturate(180%) blur(20px);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0,0,60,0.7);
+  }
+  nav {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    justify-content: space-between;
+  }
+  nav .logo {
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: #3399ff;
+    cursor: default;
+    user-select: none;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+  nav ul li {
+    font-weight: 600;
+  }
+
+  /* Hero Section */
+  section.hero {
+    min-height: 100vh;
+    padding: 8rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Letter by letter animation for hero heading */
+  h1.hero-animated {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: transparent;
+    letter-spacing: 3px;
+    user-select: none;
+  }
+  h1.hero-animated span {
+    opacity: 0;
+    color: #3399ff;
+    display: inline-block;
+    transform: translateY(40px) scale(0.8);
+    animation-fill-mode: forwards;
+    animation-name: slideUpFadeIn;
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  @keyframes slideUpFadeIn {
+    to {
+      opacity: 1;
+      color: #3399ff;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  section.hero h2 {
+    font-weight: 400;
+    color: #a6c8ff;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  section.hero p {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    color: #c9d9ffcc;
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+  }
+  .btn-primary {
+    background: #3399ff;
+    color: #0b122a;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #3399ff88;
+    transition: all 0.4s ease, transform 0.4s ease;
+    display: inline-block;
+    text-decoration: none;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    transform: skewX(-25deg);
+    transition: left 0.5s ease;
+  }
+  .btn-primary:hover::after {
+    left: 130%;
+  }
+  .btn-primary:hover {
+    background: #1e90ff;
+    box-shadow: 0 0 25px #1e90ffcc;
+    transform: scale(1.1);
+  }
+
+  /* About Section */
+  section#about {
+    background: rgba(21,41,76, 0.75);
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 25px #1e90ff88;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
+  }
+  section#about.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section#about h2 {
+    font-size: 2.1rem;
+    margin-bottom: 1.5rem;
+    color: #3399ff;
+    text-align: center;
+    user-select: none;
+  }
+  section#about p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: #adcfff;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  /* Skills Section */
+  section#skills {
+    background: rgba(21,41,76, 0.75);
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 30px #1e90ff88;
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 0.9s ease 0.6s, transform 0.9s ease 0.6s;
+  }
+  section#skills.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section#skills h2 {
+    font-size: 2.1rem;
+    margin-bottom: 1.8rem;
+    color: #3399ff;
+    text-align: center;
+    user-select: none;
+  }
+  .skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.6rem;
+  }
+  .skill-item {
+    background: rgba(31,55,107,0.85);
+    color: #a9c8ff;
+    border-radius: 30px;
+    padding: 0.75rem 1.8rem;
+    font-weight: 600;
+    box-shadow: 0 0 12px #3399ff80;
+    user-select: none;
+    cursor: default;
+    opacity: 0;
+    transform: translateY(50px);
+    animation-fill-mode: forwards;
+    animation-name: skillFadeInUp;
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  .skill-item:hover {
+    background: #1e90ff;
+    color: #f0f8ff;
+    box-shadow: 0 0 24px #1e90ffcc;
+    transform: scale(1.05);
+  }
+
+  @keyframes skillFadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Projects Section */
+  section#projects {
+    max-width: 1100px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 0.9s ease 0.35s, transform 0.9s ease 0.35s;
+  }
+  section#projects.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section#projects h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    color: #3399ff;
+    text-align: center;
+    user-select: none;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 2rem;
+  }
+  .project-card {
+    background: rgba(31,55,107,0.9);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px #3399ff88;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s ease, box-shadow 0.4s ease color 0.4s;
+    position: relative;
+    opacity: 0;
+    transform: translateY(100px) scale(0.9);
+  }
+  .project-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: var(--delay);
+  }
+  .project-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow:
+      0 0 25px 2px #1e90ff,
+      0 0 45px 5px #1e90ffaa;
+    z-index: 10;
+  }
+  .project-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .project-card:hover .project-image {
+    transform: scale(1.06);
+    filter: brightness(1.1);
+  }
+  .project-content {
+    padding: 1.2rem 1.5rem 1.8rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .project-content h3 {
+    margin-top: 0;
+    color: #a5cfff;
+    font-size: 1.5rem;
+    user-select: none;
+  }
+  .project-content p {
+    flex-grow: 1;
+    color: #c3d9ffcc;
+    margin: 0.7rem 0 1.2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .project-links a {
+    margin-right: 1.5rem;
+    font-weight: 700;
+    color: #3399ff;
+    position: relative;
+  }
+  .project-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2.5px;
+    background-color: #3399ff;
+    transition: width 0.35s ease;
+  }
+  .project-links a:hover::after {
+    width: 100%;
+  }
+  .project-links a:hover {
+    color: #1e90ff;
+  }
+
+  /* Experience Section */
+  section#experience {
+    background: rgba(21,41,76, 0.75);
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 30px #1e90ff88;
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 0.9s ease 0.6s, transform 0.9s ease 0.6s;
+  }
+  section#experience.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section#experience h2 {
+    font-size: 2.1rem;
+    margin-bottom: 1.8rem;
+    color: #3399ff;
+    text-align: center;
+    user-select: none;
+  }
+  .experience-item {
+    margin-bottom: 1.5rem;
+    color: #adcfff;
+  }
+  .experience-item h3 {
+    margin: 0;
+    color: #a5cfff;
+  }
+
+  /* Contact Section */
+  section#contact {
+    max-width: 900px;
+    margin: 4rem auto 6rem;
+    padding: 3rem 2rem;
+    background: rgba(21,41,76, 0.85);
+    border-radius: 12px;
+    box-shadow: 0 0 35px #1e90ff99;
+    opacity: 0;
+    transform: translateY(100px);
+    transition: opacity 1s ease 0.9s, transform 1s ease 0.9s;
+  }
+  section#contact.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section#contact h2 {
+    font-size: 2.2rem;
+    margin-bottom: 2.2rem;
+    color: #3399ff;
+    text-align: center;
+    user-select: none;
+  }
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+    color: #a8c9ff;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 1.8rem;
+    font-size: 1.05rem;
+    resize: vertical;
+    background: #234370;
+    color: #d0e1ff;
+    transition: background-color 0.4s ease;
+  }
+  input:focus, textarea:focus {
+    outline: 3px solid #3399ff;
+    background: #1b2f57;
+    color: #e0eaff;
+  }
+  button[type="submit"] {
+    background: #3399ff;
+    color: #0b122a;
+    border: none;
+    padding: 0.85rem 2.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #3399ffcc;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+    transform: skewX(-25deg);
+    transition: left 0.5s ease;
+  }
+  button[type="submit"]:hover::before {
+    left: 130%;
+  }
+  button[type="submit"]:hover {
+    background: #1e90ff;
+    box-shadow: 0 0 30px #1e90ffdd;
+    transform: scale(1.1);
+  }
+  .form-message {
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-top: -1.2rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+  .form-message.success {
+    color: #3399ff;
+    display: block;
+  }
+  .form-message.error {
+    color: #ff6c6c;
+    display: block;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1rem 1rem 3rem;
+    color: #567bbdbb;
+    font-weight: 500;
+  }
+
+  /* Sequential animations - orchestration via JS */
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo" aria-label="Site logo and name">My Portfolio</div>
+    <ul>
+      <li><a href="#about" tabindex="0" aria-label="About section">About</a></li>
+      <li><a href="#skills" tabindex="0" aria-label="Skills section">Skills</a></li>
+      <li><a href="#projects" tabindex="0" aria-label="Projects section">Projects</a></li>
+      <li><a href="#experience" tabindex="0" aria-label="Experience section">Experience</a></li>
+      <li><a href="#contact" tabindex="0" aria-label="Contact section">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" aria-label="Introduction hero section">
+    <h1 class="hero-animated" aria-live="polite" aria-atomic="true" aria-relevant="additions"></h1>
+    <h2>Computer Science Engineer specialized in AI&ML</h2>
+    <p>Passionate and Proficient in Python ML, Data Science & Analysis</p>
+    <a href="#projects" class="btn-primary" aria-label="View my projects section">View Projects</a>
+  </section>
+
+  <section id="about" aria-label="About me section">
+    <h2>About Me</h2>
+    <p>Dedicated Computer Science student with a strong foundation in Artificial Intelligence, Machine Learning, NLP, 
+      and Software Development, and a keen interest in data science and analytics. 
+      Proficient in Python, C, and Java, with a passion for uncovering insights through data. 
+      Actively seeking opportunities to grow through hands-on projects, 
+      internships, and certifications, while contributing to innovative and collaborative teams.</p>
+  </section>
+
+  <section id="projects" aria-label="Projects section">
+    <h2>Projects</h2>
+    <div class="project-grid" id="project-grid">
+      <article class="project-card" style="--delay: 0.1s">
+        <img src="C:\Users\ACER\Desktop\portfolio\images\SkinCancer.png" alt="Project 1 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Skin Lesion-Net Using Diverse Feature Fusion</h3>
+          <p>Built a multimodal skin cancer classifier using Vision Transformers and Multi-Layer Perceptrons, by analizing dermoscopic images and patient metadata in the ISIC 2019 dataset.</p>
+          <div class="project-links">
+            <a href="https://github.com/Pavanvarma2004/SkinLesion-Net" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Project One">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" style="--delay: 0.5s">
+        <img src="C:\Users\ACER\Desktop\portfolio\images\Emusic.png" alt="Project 3 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>E-Music Using AI</h3>
+          <p>Developed a Django-based web application integrating AI-powered personalized music recommendations with Spotify’s Web API for seamless music streaming.</p>
+          <div class="project-links">
+            <a href="https://github.com/Pavanvarma2004/E-Music-using-AI" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Project Three">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" style="--delay: 0.3s">
+        <img src="C:\Users\ACER\Desktop\portfolio\images\PlantDisease.png" alt="Project 2 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Plant Disease Detection</h3>
+          <p>Executed a CNN-based classifier to detect multiple plant diseases from leaf images, enabling early intervention in agriculture..</p>
+          <div class="project-links">
+            <a href="https://github.com/Pavanvarma2004/Plant-Disease-Detection" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Project Two">GitHub</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="project-card" style="--delay: 0.3s">
+        <img src="C:\Users\ACER\Desktop\portfolio\images\MediRisk.png" alt="Project 2 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Medi Risk Indicator</h3>
+          <p>Collected and analyzed structured user data to assess personal health risks and provide insights through an interactive Streamlit app.</p>
+          <div class="project-links">
+            <a href="https://github.com/Pavanvarma2004/Medi-Risk-Indicator" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Project Two">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" style="--delay: 0.5s">
+        <img src="C:\Users\ACER\Desktop\portfolio\images\ResumeScreen.png" alt="Project 3 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>AI-powered Resume Screening and Ranking System</h3>
+          <p>Used text data analysis and feature extraction to rank resumes based on relevance, applying scoring logic and NLP techniques.</p>
+          <div class="project-links">
+            <a href="https://github.com/Pavanvarma2004/AI-powered-Resume-Screening-and-Ranking-System" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Project Three">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project-card" style="--delay: 0.5s">
+        <img src="C:\Users\ACER\Desktop\portfolio\images\Airquality.png" alt="Project 3 Screenshot" class="project-image" />
+        <div class="project-content">
+          <h3>Monthly Air Quality Index Forecasting with LSTM</h3>
+          <p>Analyzed historical AQI data, performed time series analysis, and built LSTM models for monthly air quality prediction.</p>
+          <div class="project-links">
+            <a href="https://github.com/Pavanvarma2004/Monthly-Air-Quality-Index-Forecasting-with-LSTM-" target="_blank" rel="noopener noreferrer" aria-label="GitHub repository for Project Three">GitHub</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="experience" aria-label="Experience section">
+    <h2>Experience</h2>
+    <div class="experience-item">
+      <h3>Python Developer - D.Dolphin Designers Pvt Ltd.</h3>
+      <p><strong>May 2025 - Present</strong></p>
+      <p>Working on a Legal Website that provides 1:1 client lawyer text, audio and video chat across India.</p>
+    </div>
+    <div class="experience-item">
+      <h3>Robotic Process Automation - MassMutual India(Industrial Training)</h3>
+      <p><strong>Sept 2024 - Nov 2024</strong></p>
+      <p> Automated repetitive tasks like invoice extraction, movie search and spam mail filtering with UI Path as case studies.</p>
+    </div>
+    <div class="experience-item">
+      <h3>AICTE Internship on AI: Transformative Learning with TechSaksham - A joint CSR initiative of Microsoft & SAP</h3>
+      <p><strong>March 2025 - May 2025</strong></p>
+      <p>Designed a machine learning based AI Resume Screening & Candidate Ranking System to automate and streamline the recruitment process. </p>
+    </div>
+    <div class="experience-item">
+      <h3>Skills4Future Internship-Edunet Foundation</h3>
+      <p><strong>Jan 2025 - March 2025</strong></p>
+      <p>Worked on a Plant Disease Detection System using AI/ML for sustainable agriculture.</p>
+    </div>
+    <div class="experience-item">
+      <h3>AI Project Intern</h3>
+      <p><strong>Nov 2024 - Jan 2025</strong></p>
+      <p>Developed a Django-based web application integrating AI-powered personalized music recommendations with Spotify’s Web API for seamless music streaming.</p>
+    </div>
+  </section>
+
+  <section id="skills" aria-label="Skills section">
+    <h2>Skills</h2>
+    <div class="skill-list" id="skill-list">
+      <div class="skill-item" style="animation-delay: 0.5s" title="Python">Python</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">C Programming</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Java</div>
+      <div class="skill-item" style="animation-delay: 0.6s" title="Django">Django</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Flask</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">AWS</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Azure</div>
+      <div class="skill-item" style="animation-delay: 1.1s" title="SQL">Excel</div>
+      <div class="skill-item" style="animation-delay: 1.1s" title="SQL">MySQL</div>
+      <div class="skill-item" style="animation-delay: 1.1s" title="SQL">MongoDB</div>
+      <div class="skill-item" style="animation-delay: 0.3s" title="React">React</div>
+      <div class="skill-item" style="animation-delay: 0.4s" title="Node.js">Node.js</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">JavaScript</div>
+      <div class="skill-item" style="animation-delay: 0.7s" title="CSS3">CSS3</div>
+      <div class="skill-item" style="animation-delay: 0.8s" title="HTML5">HTML5</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Genarative AI</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Operating Systems</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Networking(TCP/IP)</div>
+      <div class="skill-item" style="animation-delay: 0.2s" title="JavaScript">Data-Driven Decision-Making,
+         Effective Communication Abilities, Collaboratively Work in Teams, Solution-Oriented Approach</div>
+    </div>
+  </section>
+
+
+  <section id="contact" aria-label="Contact me section">
+    <h2>Contact Me</h2>
+    <h3><i class="fas fa-user"></i> Name : Sriramula Pavan</h3>
+    <h3><i class="fas fa-envelope"></i> Email :
+      <a href="mailto:pawansriramula04@gmail.com">pawansriramula04@gmail.com</a>
+    </h3>
+    <h3><i class="fas fa-phone"></i> Phn No : +91 9133890922
+    </h3>
+    <h3><i class="fab fa-linkedin"></i> LinkedIn :
+      <a href="https://www.linkedin.com/in/pavan-sriramula-8527392b8/" target="_blank" rel="noopener noreferrer">Pavan Sriramula</a>
+    </h3>
+    <h3><i class="fab fa-github"></i> GitHub :
+      <a href="https://github.com/Pavanvarma2004" target="_blank" rel="noopener noreferrer">github.com/Pavanvarma2004</a>
+    </h3>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2025 sriramulapavan. All rights reserved.
+</footer>
+
+<script>
+  // Animate hero heading letter by letter
+  const heroText = "Sriramula  Pavan";
+  const h1 = document.querySelector('h1.hero-animated');
+  function animateHeroText(text, element, delay = 80) {
+    element.textContent = '';
+    for (let i = 0; i < text.length; i++) {
+      const span = document.createElement('span');
+      span.textContent = text[i];
+      span.style.animationDelay = (i * delay) + 'ms';
+      element.appendChild(span);
+    }
+  }
+
+  // Sequential reveal of sections and project cards & skills with delays
+  function sequentialReveal() {
+    // Show hero details after heading animation
+    const heroH2 = document.querySelector('section.hero h2');
+    const heroP = document.querySelector('section.hero p');
+    const heroBtn = document.querySelector('a.btn-primary');
+
+    setTimeout(() => {
+      heroH2.style.opacity = '1';
+      heroH2.style.transform = 'translateY(0)';
+    }, heroText.length * 80 + 300);
+
+    setTimeout(() => {
+      heroP.style.opacity = '1';
+      heroP.style.transform = 'translateY(0)';
+    }, heroText.length * 80 + 700);
+
+    setTimeout(() => {
+      heroBtn.style.opacity = '1';
+      heroBtn.style.transform = 'scale(1)';
+    }, heroText.length * 80 + 1100);
+
+    // Show about section
+    const aboutSection = document.getElementById('about');
+    setTimeout(() => aboutSection.classList.add('visible'), heroText.length * 80 + 1400);
+
+    // Show experience section
+    const experienceSection = document.getElementById('experience');
+    setTimeout(() => experienceSection.classList.add('visible'), heroText.length * 80 + 2000);
+
+    // Show projects section
+    const projectsSection = document.getElementById('projects');
+    setTimeout(() => projectsSection.classList.add('visible'), heroText.length * 80 + 2200);
+
+    // Reveal project cards one by one
+    const projectCards = [...document.querySelectorAll('.project-card')];
+    projectCards.forEach((card, idx) => {
+      setTimeout(() => {
+        card.classList.add('visible');
+      }, heroText.length * 80 + 2400 + idx * 350);
+    });
+
+    // Show skills section
+    const skillsSection = document.getElementById('skills');
+    setTimeout(() => skillsSection.classList.add('visible'), heroText.length * 80 + 3700);
+
+    // Animate skill items one by one using animation-delay in CSS
+    const skillItems = [...document.querySelectorAll('.skill-item')];
+    skillItems.forEach(item => {
+      item.style.animationPlayState = 'running';
+    });
+
+    // Show contact section
+    const contactSection = document.getElementById('contact');
+    setTimeout(() => contactSection.classList.add('visible'), heroText.length * 80 + 4400);
+  }
+
+  // Run animations on DOM load
+  document.addEventListener('DOMContentLoaded', () => {
+    animateHeroText(heroText, h1);
+    sequentialReveal();
+  });
+
+  // Simple form validation and simulated submission
+  const form = document.getElementById('contact-form');
+  const formMessage = document.getElementById('form-message');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    formMessage.className = '';
+    formMessage.textContent = '';
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+
+    if (!name || !email || !message) {
+      formMessage.className = 'form-message error';
+      formMessage.textContent = 'Please fill in all fields.';
+      return;
+    }
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    if (!emailPattern.test(email)) {
+      formMessage.className = 'form-message error';
+      formMessage.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    formMessage.textContent = 'Sending...';
+    form.querySelector('button[type="submit"]').disabled = true;
+
+    setTimeout(() => {
+      formMessage.className = 'form-message success';
+      formMessage.textContent = 'Thank you! Your message has been sent.';
+      form.reset();
+      form.querySelector('button[type="submit"]').disabled = false;
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>
